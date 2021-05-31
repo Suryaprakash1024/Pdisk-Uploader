@@ -1,10 +1,16 @@
 const TelegramBot = require('node-telegram-bot-api');
 const https = require('https');
 const request = require('request');
-
+const express = require("express");
 
 const token = '1876216085:AAErhJV1_cwtX2vic16baoHvWOZQZ7n2e3w';
 const bot = new TelegramBot(token, { polling: true });
+
+const dev = process.env.NODE_ENV !== "production";
+const allowWeb = !process.env.DISABLE_WEB;
+const PORT = parseInt(process.env.PORT, 10) || 3000;
+
+const server = express();
 
 bot.on('message', msg => {
   //anything
@@ -47,4 +53,8 @@ else
       // bot.sendMessage(msg.chat.id,movieTitle + " is Uploading..."); 
 
 }
+});
+
+server.listen(PORT, () => {
+  console.log(`> Running on http://localhost:${PORT}`);
 });
